@@ -49,7 +49,9 @@ and `success` is `false` and the rest of the logic desided to throw - it reverts
 
 Here is the implementation where it reverts: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/448efeea6640bbbc09373f03fbc9c88e280147ba/contracts/utils/Address.sol#L96 
 
-## What is swap call? Why do we need this?
+## What is swap callback? Why do we need this?
 
-That is a calling of any kind of swap function on DEX? To exchange assets on AMM?
-
+* If this is about Uniswap V4 hooks - swap callback can be utilized in a lot of things.
+* For example: TWAMM - the first swap in callback splits the large sum into a smaller ones so the slippage become less painful (https://blog.uniswap.org/v4-twamm-hook).
+* If this is about `safeTransfer<From>` callback - to ensure that the contract expects the tokens and can process them correctly. 
+* If this is about TX swap callback on some front end - well, to ensure that everything on the DEX went well =)
