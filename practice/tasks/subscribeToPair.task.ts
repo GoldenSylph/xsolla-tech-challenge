@@ -41,7 +41,7 @@ export default (task: any) =>
         // should be this: 0x3416cF6C708Da44DB2624D63ea0AAef7113527C6
         const pair = await hre.ethers.getContractAt(PAIR_ABI, await factoryInstance.getPool(tokenA, tokenB, fee));
 
-        console.log(`Starting to listen Swap event of pair: ${await pair.getAddress()}`);
+        console.log(`Starting to listen Swap event of pair: ${await pair.getAddress()}...`);
         const eventPromise = new Promise<void>((resolve) => {
           pair.on(pair.filters.Swap(), (
             sender: string,
@@ -63,5 +63,6 @@ export default (task: any) =>
         });
 
         await eventPromise;
+        console.log('The listening is stopped.');
       },
     );
