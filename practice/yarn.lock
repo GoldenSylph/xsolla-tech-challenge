@@ -1557,6 +1557,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uniswap/v3-core@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@uniswap/v3-core@npm:1.0.1"
+  checksum: 10c0/16305a290c1e595cf1ed2c23eb841e6df25e15ccc32043fc104c61b4ec6fbf88e0cef666da0ca70af0ad3bfd75afa52f9acd96f4018066b23d7857c5ffdc2898
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-sfc@npm:2.7.16":
   version: 2.7.16
   resolution: "@vue/compiler-sfc@npm:2.7.16"
@@ -2246,6 +2253,7 @@ __metadata:
     "@types/chai": "npm:4"
     "@types/mocha": "npm:^10.0.7"
     "@types/node": "npm:^20.14.10"
+    "@uniswap/v3-core": "npm:^1.0.1"
     chai: "npm:4"
     dlt-tools-solidity: "npm:^1.0.10"
     dotenv: "npm:^16.4.5"

@@ -1,7 +1,9 @@
 import { types } from 'hardhat/config';
+import { abi as FACTORY_ABI } from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json';
+import { abi as PAIR_ABI } from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json';
 
 export default (task: any) =>
-    task('pair', 'Asks their balances and subscribes to their events.')
+  task('pair', 'Asks their balances and subscribes to their events.')
     .addOptionalParam(
       'tokenA',
       'Define token A of pair.',
@@ -9,14 +11,31 @@ export default (task: any) =>
       types.string,
     )
     .addOptionalParam(
-        'tokenB',
-        'Define token B of pair.',
-        "0xdAC17F958D2ee523a2206206994597C13D831ec7", // USDT
-        types.string,
-      )
+      'tokenB',
+      'Define token B of pair.',
+      "0xdAC17F958D2ee523a2206206994597C13D831ec7", // USDT
+      types.string,
+    )
+    .addOptionalParam(
+      'factory',
+      'Define U3 factory.',
+      "0x1F98431c8aD98523631AE4a59f267346ea31F984", // Uniswap V3 Factory
+      types.string,
+    )
+    .addOptionalParam(
+      'fee',
+      'Define U3 pair fee.',
+      100n,
+      types.bigint,
+    )
     .setAction(
-      async ({ tokenA, tokenB }: any, hre: any) => {
-        
+      async ({ tokenA, tokenB, factory, fee }: any, hre: any) => {
+        const factoryInstance = await hre.ethers.getContractAt(FACTORY_ABI, factory);
+        const pair = await hre.ethers.getContractAt(PAIR_ABI, await factoryInstance.getPool(tokenA, tokenB, fee));
+        console.log(`Starting to lister Swap event of pair: ${await pair.getAddress()}`);
+        await pair.on("Swap", (args: any) => {
+          console.log('Received args:');
+          console.log(args);
+        });
       },
     );
-  

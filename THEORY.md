@@ -24,7 +24,7 @@ Why? Well, I don't know to be honest, but the Source telling me that it is a bas
 UPD. The break down of this 21000 gas is:
 
 * 9000 - two accounts balances write operation;
-* 3000 - ECDSA (v, r, s)-vector (signer primitives) recovery;
+* 3000 - ECDSA (v, r, s)-vector (signer primitives) recovery and verification;
 * 6800 - storing on actual disk device;
 * 2200 - (2100:  `SSTORE` into untouched slot) + (100: if no TX body was provided).
 
@@ -42,6 +42,12 @@ Source: https://docs.soliditylang.org/en/latest/contracts.html#libraries
 ## What will happen if `DELEGATECALL` reverted?
 
 Well, the TX (both write and read) would fail and the data of the revert would be pushed up to the traceback back to the context of the start of the calling of `DELEGATECALL`.
+
+Also, if the call was made like this: `(bool success, bytes memory returndata) = target.delegatecall(data);`
+
+and `success` is `false` and the rest of the logic desided to throw - it reverts of course, but if not - it does nothing.
+
+Here is the implementation where it reverts: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/448efeea6640bbbc09373f03fbc9c88e280147ba/contracts/utils/Address.sol#L96 
 
 ## What is swap call? Why do we need this?
 
