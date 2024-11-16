@@ -47,7 +47,7 @@ Factory creates a pair. The market price is constant and answers to the equation
 
 The price range is divided in small parts called 'ticks'. The price itself is contained in form of square root. That is to utilize logarithmic properties of the cumulative price, namely - additions could replace multiplying and substractions - division. Which are themselves costly operations.
 
-Like this: `tick = log1.0001(sqrt(price))`. Why 1.0001? Well because it a form of base point: 1 BPS = 0,0001% 
+Like this: `tick = log1.0001(sqrt(price))`. Why 1.0001? Well, because of base points: 1 BPS = 0,0001% 
 
 And base points are widely used in the finance and quite frankly useful when it comes to a library of tech analysis algorithms.
 
