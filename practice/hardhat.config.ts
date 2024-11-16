@@ -66,8 +66,4 @@ const config: HardhatUserConfig = {
   },
 };
 
-extendEnvironment((hre: any) => {
-  hre.bedrin = {};
-});
-
 export default config;
