@@ -42,22 +42,26 @@ export default (task: any) =>
         const pair = await hre.ethers.getContractAt(PAIR_ABI, await factoryInstance.getPool(tokenA, tokenB, fee));
 
         console.log(`Starting to listen Swap event of pair: ${await pair.getAddress()}`);
-        let eventsCatchedCount = 0;
-        await pair.on(pair.filters.Swap, (
-          sender: string, 
-          recipient: string, 
-          amount0: bigint, 
-          amount1: bigint, 
-          sqrtPriceX96: bigint,
-          liquidity: bigint,
-          tick: bigint,
-          event: any
-        ) => {
-          console.log(`- (${++eventsCatchedCount}) received args:`);
-          console.log(sender, recipient, amount0, amount1, sqrtPriceX96, liquidity, tick);
-          if (!cyclic) {
-            event.removeListener();
-          }
+        const eventPromise = new Promise<void>((resolve) => {
+          pair.on(pair.filters.Swap(), (
+            sender: string,
+            recipient: string,
+            amount0: bigint,
+            amount1: bigint,
+            sqrtPriceX96: bigint,
+            liquidity: bigint,
+            tick: bigint,
+            event: any
+          ) => {
+            console.log(`- received args:`);
+            console.log(sender, recipient, amount0, amount1, sqrtPriceX96, liquidity, tick);
+            if (!cyclic) {
+              pair.removeAllListeners(); // Remove all listeners
+              resolve(); // Resolve the promise to end the task
+            }
+          });
         });
+
+        await eventPromise;
       },
     );
