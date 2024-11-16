@@ -34,11 +34,19 @@ export default (task: any) =>
         
         // should be this: 0x3416cF6C708Da44DB2624D63ea0AAef7113527C6
         const pair = await hre.ethers.getContractAt(PAIR_ABI, await factoryInstance.getPool(tokenA, tokenB, fee));
-        
+
         console.log(`Starting to listen Swap event of pair: ${await pair.getAddress()}`);
-        await pair.on("Swap", (args: any) => {
+        await pair.on("Swap", (
+          sender: string, 
+          recipient: string, 
+          amount0: bigint, 
+          amount1: bigint, 
+          sqrtPriceX96: bigint,
+          liquidity: bigint,
+          tick: bigint
+        ) => {
           console.log('Received args:');
-          console.log(args);
+          console.log(sender, recipient, amount0, amount1, sqrtPriceX96, liquidity, tick);
         });
       },
     );
