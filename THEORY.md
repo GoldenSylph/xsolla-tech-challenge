@@ -1,0 +1,39 @@
+# Theory
+
+## Three main types of memory of a smart-contract.
+
+1) `storage` - basically a pointer into a state of the contract which is part of the global state. The global state is a Merkle tree append-only data structure with Hash Map interface. Op codes: `SSTORE`, `SLOAD`. Utilized with dynamically-sized data types within Solidity. Cannot be utilized with function params of `external` or `public` functions.
+2) `memory` - a Binary Heap based gas-free to read array of slots that is not stored in the global state. Utilized with dynamically-sized data types within Solidity. Op codes: `MSTORE<N>`, `MLOAD<N>`.
+3) `calldata` - it is basically an immutable registry of EVM-word-sided. Linear array. It is free to read from it, but you cannot write to it. Only utilized within an external function parameters. Op codes: `CALLDATACOPY`
+
+### Extra type
+
+**Transient** (`uint256 transient inaccessibleBetweenTxs`) type of memory. A bit cheaper `storage` that is only readable or writeable within one transaction (either external or internal). Op codes: `TSTORE`, `TLOAD`.
+
+Sources:
+
+* https://github.com/wolflo/evm-opcodes/blob/main/gas.md
+* https://docs.soliditylang.org/en/latest/contracts.html
+
+## How much the cheapest TX costs? Why?
+
+Well, the cheapest one would be just straight ETH transfer without any body. It costs 21000 gas.
+
+Why? Well, I don't know to be honest, but the Source telling me that it is a base fee. And since I do not add any additional intrinsic value to the TX (neither calling something nor reading something in a state-change manner) I would only spent the specified amount.
+
+Source: https://ethereum.org/en/developers/docs/gas/
+
+## What will happen if do `DELEGATECALL` within a `DELEGATECALL`?
+
+Well, it's a bit costly but the context of the TX will be propogated throughout all levels of the call. So the `msg.sender` of a contract or EOA who started the chain would be accessible in the bottom of the stack. (Since EVM is a stack machine.) And if it is indeen a contract - it's storage would be utilized.
+
+Source: https://docs.soliditylang.org/en/latest/contracts.html#libraries 
+
+## What will happen if `DELEGATECALL` reverted?
+
+Well, the TX (both write and read) would fail and the data of the revert would be pushed up to the traceback back to the context of the start of the calling of `DELEGATECALL`.
+
+## What is swap call? Why do we need this?
+
+That is a calling of any kind of swap function on DEX? To exchange assets on AMM?
+
