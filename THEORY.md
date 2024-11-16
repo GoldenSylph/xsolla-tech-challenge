@@ -52,6 +52,6 @@ Here is the implementation where it reverts: https://github.com/OpenZeppelin/ope
 ## What is swap callback? Why do we need this?
 
 * If this is about Uniswap V4 hooks - swap callback can be utilized in a lot of things.
-* For example: TWAMM - the first swap in callback splits the large sum into a smaller ones so the slippage become less painful (https://blog.uniswap.org/v4-twamm-hook).
+  * For example: TWAMM - the first swap in callback splits the large sum into a smaller ones so the slippage become less painful (https://blog.uniswap.org/v4-twamm-hook).
 * If this is about `safeTransfer<From>` callback - to ensure that the contract expects the tokens and can process them correctly. 
 * If this is about TX swap callback on some front end - well, to ensure that everything on the DEX went well =)
