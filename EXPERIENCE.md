@@ -28,7 +28,7 @@ So, I'd utilize the lib but with different router address (MOE_ROUTER) - U2 rout
 
 It's here under `ArbitrageExample.sol`.
 
-## 2. Two approached I could do.
+## 2. Two approaches I could do.
 
 1) Utilizing zero-cost flashloans (like on Balancer for example: https://docs.balancer.fi/reference/contracts/flash-loans.html).
 2) Custom swap routes optimization:

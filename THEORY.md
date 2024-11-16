@@ -21,11 +21,21 @@ Well, the cheapest one would be just straight ETH transfer without any body. It 
 
 Why? Well, I don't know to be honest, but the Source telling me that it is a base fee. And since I do not add any additional intrinsic value to the TX (neither calling something nor reading something in a state-change manner) I would only spent the specified amount.
 
-Source: https://ethereum.org/en/developers/docs/gas/
+UPD. The break down of this 21000 gas is:
+
+* 9000 - two accounts balances write operation;
+* 3000 - ECDSA (v, r, s)-vector (signer primitives) recovery;
+* 6800 - storing on actual disk device;
+* 2200 - (2100:  `SSTORE` into untouched slot) + 100: if no TX body was provided.
+
+Sources: 
+
+* https://ethereum-magicians.org/t/some-medium-term-dust-cleanup-ideas/6287#why-do-txs-cost-21000-gas-1
+* https://ethereum.org/en/developers/docs/gas/
 
 ## What will happen if do `DELEGATECALL` within a `DELEGATECALL`?
 
-Well, it's a bit costly but the context of the TX will be propogated throughout all levels of the call. So the `msg.sender` of a contract or EOA who started the chain would be accessible in the bottom of the stack. (Since EVM is a stack machine.) And if it is indeen a contract - it's storage would be utilized.
+Well, it's a bit costly but the context of the TX will be propogated throughout all levels of the call. So the `msg.sender` of a contract or EOA who started the chain would be accessible in the bottom of the stack. (Since EVM is a stack machine.) And if it is indeed a contract - it's storage would be utilized.
 
 Source: https://docs.soliditylang.org/en/latest/contracts.html#libraries 
 
