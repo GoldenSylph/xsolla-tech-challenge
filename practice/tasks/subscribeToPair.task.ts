@@ -56,8 +56,8 @@ export default (task: any) =>
             console.log(`- received args:`);
             console.log(sender, recipient, amount0, amount1, sqrtPriceX96, liquidity, tick);
             if (!cyclic) {
-              pair.removeAllListeners(); // Remove all listeners
-              resolve(); // Resolve the promise to end the task
+              event.removeListener(); 
+              resolve();
             }
           });
         });
