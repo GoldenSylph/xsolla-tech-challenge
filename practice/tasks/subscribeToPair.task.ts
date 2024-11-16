@@ -28,25 +28,35 @@ export default (task: any) =>
       100n,
       types.bigint,
     )
+    .addOptionalParam(
+      'cyclic',
+      'Define if the event should be constantly listened.',
+      false,
+      types.boolean,
+    )
     .setAction(
-      async ({ tokenA, tokenB, factory, fee }: any, hre: any) => {
+      async ({ tokenA, tokenB, factory, fee, cyclic }: any, hre: any) => {
         const factoryInstance = await hre.ethers.getContractAt(FACTORY_ABI, factory);
         
         // should be this: 0x3416cF6C708Da44DB2624D63ea0AAef7113527C6
         const pair = await hre.ethers.getContractAt(PAIR_ABI, await factoryInstance.getPool(tokenA, tokenB, fee));
 
         console.log(`Starting to listen Swap event of pair: ${await pair.getAddress()}`);
-        await pair.on("Swap", (
+        await pair.on(pair.filters.Swap, (
           sender: string, 
           recipient: string, 
           amount0: bigint, 
           amount1: bigint, 
           sqrtPriceX96: bigint,
           liquidity: bigint,
-          tick: bigint
+          tick: bigint,
+          event: any
         ) => {
           console.log('Received args:');
           console.log(sender, recipient, amount0, amount1, sqrtPriceX96, liquidity, tick);
+          if (!cyclic) {
+            event.removeListener();
+          }
         });
       },
     );
