@@ -32,7 +32,7 @@ export default (task: any) =>
       async ({ tokenA, tokenB, factory, fee }: any, hre: any) => {
         const factoryInstance = await hre.ethers.getContractAt(FACTORY_ABI, factory);
         const pair = await hre.ethers.getContractAt(PAIR_ABI, await factoryInstance.getPool(tokenA, tokenB, fee));
-        console.log(`Starting to lister Swap event of pair: ${await pair.getAddress()}`);
+        console.log(`Starting to listen Swap event of pair: ${await pair.getAddress()}`);
         await pair.on("Swap", (args: any) => {
           console.log('Received args:');
           console.log(args);
