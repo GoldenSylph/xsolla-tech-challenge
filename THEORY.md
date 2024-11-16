@@ -26,7 +26,7 @@ UPD. The break down of this 21000 gas is:
 * 9000 - two accounts balances write operation;
 * 3000 - ECDSA (v, r, s)-vector (signer primitives) recovery;
 * 6800 - storing on actual disk device;
-* 2200 - (2100:  `SSTORE` into untouched slot) + 100: if no TX body was provided.
+* 2200 - (2100:  `SSTORE` into untouched slot) + (100: if no TX body was provided).
 
 Sources: 
 
